@@ -5,21 +5,25 @@ import 'package:facebook/widgets/orange_btn.dart';
 import 'package:facebook/widgets/wellcome_title.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
+  final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
+    _fullNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -38,10 +42,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const SizedBox(height: 120),
                   WellcomeTitle(
-                    title: 'Login',
-                    subtitle: 'Please sign in to continue.',
+                    title: "Create Account",
+                    subtitle:
+                        "Please fill in the details to create your account",
                   ),
                   const SizedBox(height: 48),
+                  CustomTextField(
+                    label: "FULL NAME",
+                    icon: Icons.person_outline,
+                    controller: _fullNameController,
+                  ),
+                  const SizedBox(height: 24),
                   CustomTextField(
                     label: "EMAIL",
                     icon: Icons.email_outlined,
@@ -49,35 +60,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24),
                   CustomTextField(
-                    label: 'PASSWORD',
+                    label: "PASSWORD",
                     icon: Icons.lock_outline,
                     controller: _passwordController,
                     obscureText: true,
-                    suffix: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'FORGOT',
-                        style: TextStyle(
-                          color: Color(0xFFFF8C00),
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  CustomTextField(
+                    label: "CONFIRM PASSWORD",
+                    icon: Icons.lock_outline,
+                    controller: _confirmPasswordController,
+                    obscureText: true,
                   ),
                   const SizedBox(height: 48),
                   OrangeBtn(
-                    text: 'LOGIN',
+                    text: 'SIGN UP',
                     onPressed: () {
-                      // TODO: Handle login
+                      // TODO: Handle registration
                     },
                   ),
                   const Spacer(),
                   DirectTxt(
-                    prompt: "Don't have a account?",
-                    actionText: "Sign up",
+                    prompt: "Already have a account?",
+                    actionText: "Sign in",
                     onTap: () {
-                      Navigator.pushNamed(context, '/register');
+                      Navigator.pushNamed(context, '/');
                     },
                   ),
                   const SizedBox(height: 32),
