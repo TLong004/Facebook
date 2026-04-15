@@ -1,9 +1,19 @@
-import 'package:facebook/views/login/login_screen.dart';
-import 'package:facebook/views/register/register_screen.dart';
-import 'package:facebook/views/main_page.dart'; // Giữ cái này của bạn A
-import 'package:flutter/material.dart';
 
-void main() {
+import 'package:facebook/auth_wapper.dart';
+import 'package:facebook/firebase_options.dart';
+import 'package:facebook/view_models/auth_view_model.dart';
+import 'package:facebook/views/login/login_screen.dart';
+import 'package:facebook/views/main_page.dart';
+import 'package:facebook/views/register/register_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -12,17 +22,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "ChatApp",
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: "SF Pro Display"),
-      // Kết hợp cả 2: Dùng InitialRoute của Phú nhưng giữ Route tới MainPage của bạn A
-      initialRoute: '/', 
-      routes: {
-        '/': (context) => const LoginScreen(),    
-        '/register': (context) => const RegisterScreen(),
-        '/home': (context) => const MainPage(), // Thêm đường dẫn vào trang chính của bạn A
-      },
+    return ChangeNotifierProvider(
+      create: (_) => AuthViewModel(),
+      child: MaterialApp(
+        title: "ChatApp",
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: "SF Pro Display"),
+        initialRoute: '/', 
+        routes: {
+          '/': (context) => AuthWrapper(),  
+          '/home': (context) => MainPage(),
+          '/login': (context) => LoginScreen(),
+          '/register': (context) => RegisterScreen(),     
+        },
+      ),
     );
   }
 }
